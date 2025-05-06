@@ -1,15 +1,18 @@
 import express from 'express';
+import rootRoutes from './routes/index.js';
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-const port = process.env.PORT || 3000;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.status(200).send('Primeira rota do backend -bbbbbb');
-}
-);
+app.use('/', rootRoutes);
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-    }
-);
+app.get('/api', (req, res) => {
+    res.send("Welcome to the API");
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

@@ -1,0 +1,38 @@
+Table users {
+  id integer [primary key, increment]
+  username text [not null]
+  email text [not null, unique]
+  password text [not null]
+  role varchar [default: 'user', note: 'admin/partial/user']
+  photo text [note: 'Link to the photo']
+  created_at timestamp [default: "CURRENT_TIMESTAMP"]
+  updated_at timestamp
+
+  indexes {
+    (email, password) [name: 'login']
+    (username) [name: 'name']
+    (email) [unique, name: 'unique_email']
+  }
+}
+
+Table payments {
+  id integer [primary key, increment]
+  user_id integer [not null, note: 'Who made the payment']
+  user_control integer [note: 'User who create the register']
+  value real [not null]
+  receipt text [not null]
+  photo text [note: 'Link to the photo']
+  observation text
+  payment_date timestamp [not null]
+  checked_payment boolean [default: false]
+  created_at timestamp [default: "CURRENT_TIMESTAMP"]
+  updated_at timestamp
+
+  indexes {
+    (payment_date) [name: 'All payments from date']
+    (value) [name: 'Range values']
+    (payment_date, value) [name: 'All payments between date and value']
+  }
+}
+
+Ref user_payment: payments.user_id > users.id
